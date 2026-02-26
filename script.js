@@ -1,4 +1,28 @@
 // script.js
+const translations = {
+    en: {
+        dashboardNav: "Dashboard", spectrumNav: "Spectrum Analysis", systemOnline: "System Online", cameraActive: "Hyperspectral Camera: Active", mainTitle: "Smart Fruit Quality Inspection System", subTitle: "AI-powered hyperspectral bruise detection for industrial fruit grading", currentBatch: "Current Batch:", metricTotal: "Total Processed", trendVsTdy: "4.5% vs yesterday", metricRejected: "Rejected Rate", trendImproved: "-1.2% (improved)", metricAccuracy: "Accuracy", trendLab: "Based on Lab Validation", metricSavings: "Est. Monthly Savings", trendRep: "Replaced 3 manual sorters", liveAnalysisTitle: "Live Single Fruit Analysis", scannerActive: "Scanner Active", lgHealthy: "Healthy", lgBruise: "Bruise/Damage", lgBg: "Background", ixTitle: "HYPERSPECTRAL<br>ANALYSIS", ixSub: "TISSUE HEALTH INDEX", ixDamaged: "DAMAGED", ixHealthy: "HEALTHY", st1Title: "Hyperspectral Cube", st1Status: "Acquired", st2Title: "Segmentation", st2Status: "Masked", st3Title: "Defect Detection", st3Status: "Analyzing...", lblBrix: "Brix (Sweetness)", lblRipe: "Ripeness Stage", lblPest: "Pesticide Residue", lblFungi: "Fungal Exudate", lblDamage: "Damage Proportion", qualitySummary: "Quality Classification Summary", chartAccepted: "Accepted", chartRejected: "Rejected", recentLogs: "Recent Conveyor Logs", exportCsv: "Export CSV", colTime: "Timestamp", colId: "Sample ID", colBrix: "Brix Est.", colRipe: "Ripeness", colPest: "Pesticide", colFungi: "Fungi Detect", colDmg: "Damage %", colStatus: "Status",
+        jsSafe: "Safe (<0.01ppm)", jsNegative: "Negative", jsPositive: "Positive", jsAccepted: "ACCEPTED", jsRejected: "REJECTED", jsAccBadge: "ACCEPTED", jsRejBadge: "REJECTED",
+        jsReasonSurface: "Surface intact. Meet Class A export standard.",
+        jsReasonPest: "Pesticide residue exceeding MRL limits. Reject.",
+        jsReasonFungi: "Fungal infection detected in subsurface. Do not pack.",
+        jsReasonSevere: "Severe internal bruising detected. Exceeds threshold.",
+        jsReasonMinor: "Minor bruise > 15%. Downgrade to Class C or Reject.",
+        jsStage2: "Stage 2 (Firm)", jsStage3: "Stage 3 (Half-ripe)", jsStage4: "Stage 4 (Ripe)", jsStage5: "Stage 5 (Over-ripe)"
+    },
+    vi: {
+        dashboardNav: "Bảng điều khiển", spectrumNav: "Phân tích Phổ", systemOnline: "Hệ thống Bật", cameraActive: "Camera Siêu Quang Phổ: Bật", mainTitle: "Hệ Thống Phân Loại Chất Lượng Trái Cây", subTitle: "Phát hiện dập nát bằng phân tích quang phổ AI cho công nghiệp", currentBatch: "Lô hiện tại:", metricTotal: "Tổng số phân tích", trendVsTdy: "Tăng 4.5% so với hôm qua", metricRejected: "Tỉ lệ Lỗi", trendImproved: "Giảm 1.2% (cải thiện)", metricAccuracy: "Độ chính xác", trendLab: "Nghiệm thu bởi Lab", metricSavings: "Tiết kiệm ước tính", trendRep: "Thay thế 3 nhân công", liveAnalysisTitle: "Phân Tích Trái Cây Trực Tiếp", scannerActive: "Máy quét đang chạy", lgHealthy: "Khỏe mạnh", lgBruise: "Dập / Hư hỏng", lgBg: "Nền", ixTitle: "PHÂN TÍCH<br>QUANG PHỔ", ixSub: "CHỈ SỐ SỨC KHỎE MÔ TRÁI", ixDamaged: "HƯ HỎNG", ixHealthy: "TỐT", st1Title: "Khối Phổ 3D", st1Status: "Đã thu nhận", st2Title: "Tách nền Mask", st2Status: "Đã tách quả", st3Title: "Phát hiện Lỗi", st3Status: "Đang phân tích...", lblBrix: "Độ Brix (Ngọt)", lblRipe: "Độ Chín", lblPest: "Chất Bảo Quản", lblFungi: "Tụ Nấm", lblDamage: "Tỉ lệ móp dập", qualitySummary: "Tóm tắt Phân Loại", chartAccepted: "Đạt chuẩn", chartRejected: "Loại bỏ", recentLogs: "Nhật ký Băng chuyền", exportCsv: "Lưu file CSV", colTime: "Thời gian", colId: "Mã mẫu", colBrix: "Độ Brix", colRipe: "Độ Chín", colPest: "Hoá chất", colFungi: "Nấm", colDmg: "Tỉ lệ dập", colStatus: "Trạng thái",
+        jsSafe: "An toàn (<0.01ppm)", jsNegative: "Không có", jsPositive: "Cảnh báo", jsAccepted: "ĐẠT QUY CHUẨN", jsRejected: "BỊ LOẠI", jsAccBadge: "ĐẠT", jsRejBadge: "LOẠI",
+        jsReasonSurface: "Bề mặt nguyên vẹn. Đạt tiêu chuẩn xuất khẩu Loại A.",
+        jsReasonPest: "Tồn dư thuốc BVTV vượt ngưỡng an toàn. Hủy bỏ.",
+        jsReasonFungi: "Phát hiện ổ nấm phát triển dưới biểu bì. Loại bỏ.",
+        jsReasonSevere: "Phát hiện vết dập máu mủ nội mô sâu nghiêm trọng. Loại bỏ.",
+        jsReasonMinor: "Vết dập nhẹ > 15%. Hạ cấp xuống tiêu chuẩn Hàng chợ C.",
+        jsStage2: "Bậc 2 (Cứng)", jsStage3: "Bậc 3 (Bán chín)", jsStage4: "Bậc 4 (Chín chuẩn)", jsStage5: "Bậc 5 (Chín quá)"
+    }
+};
+let currentLang = 'en';
+
 document.addEventListener("DOMContentLoaded", () => {
 
     // 1. Initialize Quality Classification Chart (Doughnut)
@@ -76,8 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
         tr.classList.add('new-row');
         
         const statusBadge = data.status === 'Accepted' 
-            ? '<span class="tag-accepted"><i class="fa-solid fa-check"></i> ACCEPTED</span>'
-            : '<span class="tag-rejected"><i class="fa-solid fa-xmark"></i> REJECTED</span>';
+            ? `<span class="tag-accepted"><i class="fa-solid fa-check"></i> ${translations[currentLang].jsAccBadge}</span>`
+            : `<span class="tag-rejected"><i class="fa-solid fa-xmark"></i> ${translations[currentLang].jsRejBadge}</span>`;
 
         tr.innerHTML = `
             <td>${data.timestamp}</td>
@@ -128,13 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
             let damage = 0;
             let status = '';
             let brix = (11 + Math.random() * 4).toFixed(1);
-            let fungi = 'Negative';
-            let ripenessStages = ["Stage 2 (Firm)", "Stage 3 (Half-ripe)", "Stage 4 (Ripe)", "Stage 5 (Over-ripe)"];
+            let fungi = translations[currentLang].jsNegative;
+            let ripenessStages = [translations[currentLang].jsStage2, translations[currentLang].jsStage3, translations[currentLang].jsStage4, translations[currentLang].jsStage5];
             let ripeness = ripenessStages[Math.floor(Math.random() * ripenessStages.length)];
             let pesticide = (Math.random() * 0.03).toFixed(2) + " ppm";
-            if(pesticide === "0.00 ppm" || pesticide === "0.01 ppm") pesticide = "Safe (<0.01ppm)";
+            if(pesticide === "0.00 ppm" || pesticide === "0.01 ppm") pesticide = translations[currentLang].jsSafe;
             
-            let reasonText = '<i class="fa-solid fa-check-circle" style="color:var(--status-accepted)"></i> Surface intact. Meet Class A export standard.';
+            let reasonText = `<i class="fa-solid fa-check-circle" style="color:var(--status-accepted)"></i> ${translations[currentLang].jsReasonSurface}`;
 
             if (isDefective) {
                 damage = 15 + Math.random() * 50; 
@@ -144,18 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 let defectType = Math.random();
                 if(defectType < 0.2) {
                     pesticide = (0.05 + Math.random() * 0.05).toFixed(2) + " ppm";
-                    reasonText = '<i class="fa-solid fa-skull-crossbones" style="color:var(--status-rejected)"></i> Pesticide residue exceeding MRL limits. Reject.';
+                    reasonText = `<i class="fa-solid fa-skull-crossbones" style="color:var(--status-rejected)"></i> ${translations[currentLang].jsReasonPest}`;
                     damage = Math.random() * 5; 
                 } else if(defectType < 0.45) {
-                    fungi = 'Positive';
-                    reasonText = '<i class="fa-solid fa-virus" style="color:var(--status-rejected)"></i> Fungal infection detected in subsurface. Do not pack.';
+                    fungi = translations[currentLang].jsPositive;
+                    reasonText = `<i class="fa-solid fa-virus" style="color:var(--status-rejected)"></i> ${translations[currentLang].jsReasonFungi}`;
                 } else if(damage > 40) {
-                    reasonText = '<i class="fa-solid fa-triangle-exclamation" style="color:var(--status-rejected)"></i> Severe internal bruising detected. Exceeds threshold.';
+                    reasonText = `<i class="fa-solid fa-triangle-exclamation" style="color:var(--status-rejected)"></i> ${translations[currentLang].jsReasonSevere}`;
                 } else {
-                    reasonText = '<i class="fa-solid fa-triangle-exclamation" style="color:var(--status-warning)"></i> Minor bruise > 15%. Downgrade to Class C or Reject.';
+                    reasonText = `<i class="fa-solid fa-triangle-exclamation" style="color:var(--status-warning)"></i> ${translations[currentLang].jsReasonMinor}`;
                 }
 
-                currentStatusEl.innerHTML = `<h2 class="status-rejected">REJECTED</h2>`;
+                currentStatusEl.innerHTML = `<h2 class="status-rejected">${translations[currentLang].jsRejected}</h2>`;
                 progressFillEl.style.background = 'var(--status-rejected)';
                 
                 // Static image, varying filter for defects
@@ -167,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 status = 'Accepted';
                 acceptedCount++;
                 
-                currentStatusEl.innerHTML = `<h2 class="status-accepted">ACCEPTED</h2>`;
+                currentStatusEl.innerHTML = `<h2 class="status-accepted">${translations[currentLang].jsAccepted}</h2>`;
                 progressFillEl.style.background = 'var(--status-accepted)';
                 
                 // Static image, healthy filter
@@ -179,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             currentRipenessEl.innerText = ripeness;
             currentPesticideEl.innerText = pesticide;
             
-            if(fungi === 'Positive') {
+            if(fungi === translations[currentLang].jsPositive) {
                 currentFungiEl.innerHTML = `<span style="color: var(--status-rejected); font-weight: bold;">${fungi}</span>`;
             } else {
                 currentFungiEl.innerText = fungi;
@@ -206,8 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
             qualityChart.data.datasets[0].data = [acceptedCount, rejectedCount];
             qualityChart.update();
             
-            document.querySelector('.dot.accepted').parentElement.innerHTML = `<span class="dot accepted"></span> Accepted (${(acceptedCount / totalProcessed * 100).toFixed(1)}%)`;
-            document.querySelector('.dot.rejected').parentElement.innerHTML = `<span class="dot rejected"></span> Rejected (${(rejectedCount / totalProcessed * 100).toFixed(1)}%)`;
+            document.querySelector('.dot.accepted').parentElement.innerHTML = `<span class="dot accepted"></span> ${translations[currentLang].chartAccepted} (${(acceptedCount / totalProcessed * 100).toFixed(1)}%)`;
+            document.querySelector('.dot.rejected').parentElement.innerHTML = `<span class="dot rejected"></span> ${translations[currentLang].chartRejected} (${(rejectedCount / totalProcessed * 100).toFixed(1)}%)`;
             
             addTableRow({
                 id: `SAMPLE-0${sampleCounter}`,
@@ -331,4 +355,33 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }, 1000);
     }
+
+    // Language Toggle Helper
+    function setLang(lang) {
+        if(!translations[lang]) return;
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            let key = el.getAttribute('data-i18n');
+            if(translations[lang][key]) {
+                if (el.tagName === 'H2' && el.querySelector('i')) {
+                    const iconHTML = el.querySelector('i').outerHTML;
+                    el.innerHTML = `${iconHTML} <span data-i18n="${key}">${translations[lang][key]}</span>`;
+                } else {
+                    el.innerHTML = translations[lang][key]; 
+                }
+            }
+        });
+        
+        document.getElementById('btn-lang-en').classList.remove('active');
+        document.getElementById('btn-lang-vi').classList.remove('active');
+        document.getElementById(`btn-lang-${lang}`).classList.add('active');
+        
+        const actRate = (acceptedCount / totalProcessed * 100).toFixed(1);
+        const rjcRate = (rejectedCount / totalProcessed * 100).toFixed(1);
+        document.querySelector('.dot.accepted').parentElement.innerHTML = `<span class="dot accepted"></span> ${translations[lang].chartAccepted} (${actRate}%)`;
+        document.querySelector('.dot.rejected').parentElement.innerHTML = `<span class="dot rejected"></span> ${translations[lang].chartRejected} (${rjcRate}%)`;
+    }
+
+    document.getElementById('btn-lang-en').addEventListener('click', () => setLang('en'));
+    document.getElementById('btn-lang-vi').addEventListener('click', () => setLang('vi'));
 });

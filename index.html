@@ -20,17 +20,17 @@
                 <img src="assets/logo.png" alt="FruitCare AI" class="brand-logo">
             </div>
             <ul class="nav-menu">
-                <li class="active" id="nav-dashboard"><i class="fa-solid fa-chart-pie"></i> Dashboard</li>
-                <li id="nav-spectrum"><i class="fa-solid fa-wave-square" style="transform: scaleX(-1) rotate(-90deg);"></i> Spectrum Analysis</li>
+                <li class="active" id="nav-dashboard"><i class="fa-solid fa-chart-pie"></i> <span data-i18n="dashboardNav">Dashboard</span></li>
+                <li id="nav-spectrum"><i class="fa-solid fa-wave-square" style="transform: scaleX(-1) rotate(-90deg);"></i> <span data-i18n="spectrumNav">Spectrum Analysis</span></li>
                 <li style="display: none;"><i class="fa-solid fa-video"></i> Live Inspection</li>
                 <li style="display: none;"><i class="fa-solid fa-layer-group"></i> Batch Analysis</li>
-                <li id="nav-roi"><i class="fa-solid fa-chart-line"></i> ROI & Reports</li>
+                <li id="nav-roi" style="display: none;"><i class="fa-solid fa-chart-line"></i> ROI & Reports</li>
                 <li style="display: none;"><i class="fa-solid fa-gear"></i> Settings</li>
             </ul>
             <div class="system-status">
                 <div class="status-indicator"></div>
-                <span>System Online</span>
-                <small>Hyperspectral Camera: Active</small>
+                <span data-i18n="systemOnline">System Online</span>
+                <small data-i18n="cameraActive">Hyperspectral Camera: Active</small>
             </div>
         </aside>
 
@@ -38,12 +38,16 @@
         <main class="main-content">
             <header class="topbar">
                 <div class="header-titles">
-                    <h1>Smart Fruit Quality Inspection System</h1>
-                    <p>AI-powered hyperspectral bruise detection for industrial fruit grading</p>
+                    <h1 data-i18n="mainTitle">Smart Fruit Quality Inspection System</h1>
+                    <p data-i18n="subTitle">AI-powered hyperspectral bruise detection for industrial fruit grading</p>
                 </div>
                 <div class="header-actions">
+                    <div class="lang-switch-container">
+                        <button id="btn-lang-en" class="lang-btn active">EN</button>
+                        <button id="btn-lang-vi" class="lang-btn">VI</button>
+                    </div>
                     <div class="batch-selector">
-                        <label>Current Batch:</label>
+                        <label data-i18n="currentBatch">Current Batch:</label>
                         <select>
                             <option>Batch #A-092 (Mango)</option>
                             <option>Batch #A-091 (Tomato)</option>
@@ -57,33 +61,33 @@
                 <div class="metric-card">
                     <div class="metric-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
                     <div class="metric-data">
-                        <h3>Total Processed</h3>
+                        <h3 data-i18n="metricTotal">Total Processed</h3>
                         <div class="value counter" id="totalProcessed">12,450</div>
-                        <span class="trend up"><i class="fa-solid fa-arrow-up"></i> 4.5% vs yesterday</span>
+                        <span class="trend up"><i class="fa-solid fa-arrow-up"></i> <span data-i18n="trendVsTdy">4.5% vs yesterday</span></span>
                     </div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-icon alert"><i class="fa-solid fa-circle-exclamation"></i></div>
                     <div class="metric-data">
-                        <h3>Rejected Rate</h3>
+                        <h3 data-i18n="metricRejected">Rejected Rate</h3>
                         <div class="value" id="rejectRate">8.2%</div>
-                        <span class="trend down"><i class="fa-solid fa-arrow-down"></i> -1.2% (improved)</span>
+                        <span class="trend down"><i class="fa-solid fa-arrow-down"></i> <span data-i18n="trendImproved">-1.2% (improved)</span></span>
                     </div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-icon success"><i class="fa-solid fa-check-double"></i></div>
                     <div class="metric-data">
-                        <h3>Accuracy</h3>
+                        <h3 data-i18n="metricAccuracy">Accuracy</h3>
                         <div class="value">99.4%</div>
-                        <span class="trend neutral">Based on Lab Validation</span>
+                        <span class="trend neutral" data-i18n="trendLab">Based on Lab Validation</span>
                     </div>
                 </div>
                 <div class="metric-card highlight-card">
                     <div class="metric-icon"><i class="fa-solid fa-piggy-bank"></i></div>
                     <div class="metric-data">
-                        <h3>Est. Monthly Savings</h3>
+                        <h3 data-i18n="metricSavings">Est. Monthly Savings</h3>
                         <div class="value">21.5M ₫</div>
-                        <span class="trend up">Replaced 3 manual sorters</span>
+                        <span class="trend up" data-i18n="trendRep">Replaced 3 manual sorters</span>
                     </div>
                 </div>
             </div>
@@ -92,8 +96,8 @@
                 <!-- Live Analysis (Hình 2 Equivalent) -->
                 <div class="card col-span-2 live-analysis-card">
                     <div class="card-header">
-                        <h2><i class="fa-solid fa-satellite-dish blink"></i> Live Single Fruit Analysis</h2>
-                        <span class="badge">Scanner Active</span>
+                        <h2><i class="fa-solid fa-satellite-dish blink"></i> <span data-i18n="liveAnalysisTitle">Live Single Fruit Analysis</span></h2>
+                        <span class="badge" data-i18n="scannerActive">Scanner Active</span>
                     </div>
                     <div class="analysis-container">
                         <div class="camera-feed sci-fi-container">
@@ -107,19 +111,19 @@
                             
                             <!-- Legend inside feed -->
                             <div class="heatmap-legend">
-                                <div><span class="color-box yellow"></span> Healthy</div>
-                                <div><span class="color-box blue"></span> Bruise/Damage</div>
-                                <div><span class="color-box purple"></span> Background</div>
+                                <div><span class="color-box yellow"></span> <span data-i18n="lgHealthy">Healthy</span></div>
+                                <div><span class="color-box blue"></span> <span data-i18n="lgBruise">Bruise/Damage</span></div>
+                                <div><span class="color-box purple"></span> <span data-i18n="lgBg">Background</span></div>
                             </div>
                             
                             <!-- New Tissue Health Index Overlay -->
                             <div class="health-index-overlay">
-                                <div class="overlay-title">HYPERSPECTRAL<br>ANALYSIS</div>
-                                <div class="overlay-subtitle">TISSUE HEALTH INDEX</div>
+                                <div class="overlay-title" data-i18n="ixTitle">HYPERSPECTRAL<br>ANALYSIS</div>
+                                <div class="overlay-subtitle" data-i18n="ixSub">TISSUE HEALTH INDEX</div>
                                 <div class="gradient-bar"></div>
                                 <div class="gradient-labels">
-                                    <span>DAMAGED</span>
-                                    <span>HEALTHY</span>
+                                    <span data-i18n="ixDamaged">DAMAGED</span>
+                                    <span data-i18n="ixHealthy">HEALTHY</span>
                                 </div>
                             </div>
                         </div>
@@ -129,52 +133,52 @@
                                     <div class="icon-circle"><i class="fa-solid fa-cube"></i></div>
                                     <div class="step-info">
                                         <span class="step-num">(i)</span>
-                                        <span class="step-text">Hyperspectral Cube</span>
+                                        <span class="step-text" data-i18n="st1Title">Hyperspectral Cube</span>
                                     </div>
-                                    <div class="step-status">Acquired</div>
+                                    <div class="step-status" data-i18n="st1Status">Acquired</div>
                                 </div>
                                 <div class="step-connector"></div>
                                 <div class="step-card active" id="step2">
                                     <div class="icon-circle"><i class="fa-solid fa-crop"></i></div>
                                     <div class="step-info">
                                         <span class="step-num">(ii)</span>
-                                        <span class="step-text">Segmentation</span>
+                                        <span class="step-text" data-i18n="st2Title">Segmentation</span>
                                     </div>
-                                    <div class="step-status">Masked</div>
+                                    <div class="step-status" data-i18n="st2Status">Masked</div>
                                 </div>
                                 <div class="step-connector"></div>
                                 <div class="step-card active pulse-step" id="step3">
                                     <div class="icon-circle"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                                     <div class="step-info">
                                         <span class="step-num">(iii)</span>
-                                        <span class="step-text">Defect Detection</span>
+                                        <span class="step-text" data-i18n="st3Title">Defect Detection</span>
                                     </div>
-                                    <div class="step-status">Analyzing...</div>
+                                    <div class="step-status" data-i18n="st3Status">Analyzing...</div>
                                 </div>
                             </div>
                             
                             <div class="current-result">
-                                <h4>Current Sample ID: #SAMPLE-0892</h4>
+                                <h4 id="currentSampleHeading">Current Sample ID: #SAMPLE-0892</h4>
                                 <div class="detailed-metrics-grid">
                                     <div class="metric-item">
-                                        <span class="label">Brix (Sweetness)</span>
+                                        <span class="label" data-i18n="lblBrix">Brix (Sweetness)</span>
                                         <span class="value" id="currentBrix">12.1%</span>
                                     </div>
                                     <div class="metric-item">
-                                        <span class="label">Ripeness Stage</span>
+                                        <span class="label" data-i18n="lblRipe">Ripeness Stage</span>
                                         <span class="value" id="currentRipeness">Stage 4 (Ripe)</span>
                                     </div>
                                     <div class="metric-item">
-                                        <span class="label">Pesticide Residue</span>
+                                        <span class="label" data-i18n="lblPest">Pesticide Residue</span>
                                         <span class="value" id="currentPesticide">Safe (<0.01ppm)</span>
                                     </div>
                                     <div class="metric-item">
-                                        <span class="label">Fungal Exudate</span>
+                                        <span class="label" data-i18n="lblFungi">Fungal Exudate</span>
                                         <span class="value" id="currentFungi">Negative</span>
                                     </div>
                                 </div>
                                 <div class="damage-meter-container">
-                                    <div class="label">Damage Proportion</div>
+                                    <div class="label" data-i18n="lblDamage">Damage Proportion</div>
                                     <div class="value" id="currentDamage">61.00%</div>
                                 </div>
                                 <div class="progress-bar">
@@ -192,35 +196,35 @@
                 <!-- Batch Summary (Hình 1 Equivalent) -->
                 <div class="card">
                     <div class="card-header">
-                        <h2>Quality Classification Summary</h2>
+                        <h2 data-i18n="qualitySummary">Quality Classification Summary</h2>
                     </div>
                     <div class="chart-container">
                         <canvas id="qualityChart"></canvas>
                     </div>
                     <div class="chart-legend-custom">
-                        <div class="legend-item"><span class="dot accepted"></span> Accepted (91.8%)</div>
-                        <div class="legend-item"><span class="dot rejected"></span> Rejected (8.2%)</div>
+                        <div class="legend-item"><span class="dot accepted"></span> <span data-i18n="chartAccepted">Accepted</span> (91.8%)</div>
+                        <div class="legend-item"><span class="dot rejected"></span> <span data-i18n="chartRejected">Rejected</span> (8.2%)</div>
                     </div>
                 </div>
 
                 <!-- Recent Inspections Data Table -->
                 <div class="card col-span-3">
                     <div class="card-header">
-                        <h2>Recent Conveyor Logs</h2>
-                        <button class="btn-export"><i class="fa-solid fa-download"></i> Export CSV</button>
+                        <h2 data-i18n="recentLogs">Recent Conveyor Logs</h2>
+                        <button class="btn-export"><i class="fa-solid fa-download"></i> <span data-i18n="exportCsv">Export CSV</span></button>
                     </div>
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Timestamp</th>
-                                    <th>Sample ID</th>
-                                    <th>Brix Est.</th>
-                                    <th>Ripeness</th>
-                                    <th>Pesticide</th>
-                                    <th>Fungi Detect</th>
-                                    <th>Damage %</th>
-                                    <th>Status</th>
+                                    <th data-i18n="colTime">Timestamp</th>
+                                    <th data-i18n="colId">Sample ID</th>
+                                    <th data-i18n="colBrix">Brix Est.</th>
+                                    <th data-i18n="colRipe">Ripeness</th>
+                                    <th data-i18n="colPest">Pesticide</th>
+                                    <th data-i18n="colFungi">Fungi Detect</th>
+                                    <th data-i18n="colDmg">Damage %</th>
+                                    <th data-i18n="colStatus">Status</th>
                                 </tr>
                             </thead>
                             <tbody id="logTableBody">
