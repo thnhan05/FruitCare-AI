@@ -1,25 +1,1091 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FruitCare AI - Smart Inspection System</title>
-    <link rel="stylesheet" href="style.css?v=2.1">
+    <title>FruitCare AI - Hệ Sinh Thái</title>
+    <link rel="stylesheet" href="style.css?v=3.2">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- AOS for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Dashboard merged styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-main: #111823;
+    --bg-card: #1c2533;
+    --bg-hover: rgba(255,255,255,0.05);
+    --text-primary: #f8fafc;
+    --text-secondary: #9ca3af;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-green: #10b981;
+    --status-accepted: #22c55e;
+    --status-warning: #eab308;
+    --status-rejected: #ef4444;
+    --border-color: rgba(255,255,255,0.05);
+    --font-family: 'Inter', sans-serif;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+#dashboard-app {
+    font-family: var(--font-family);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.sidebar-header i { font-size: 2rem; color: var(--accent-green); }
+.sidebar-header h2 { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.5px; }
+.sidebar-header .highlight { color: var(--accent-blue); background: -webkit-linear-gradient(45deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text-glow { text-shadow: 0 0 10px rgba(16, 185, 129, 0.6); }
+.brand-logo { max-width: 180px; max-height: 80px; object-fit: contain; }
+
+.nav-menu { list-style: none; flex: 1; display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem; }
+.nav-menu li { padding: 0.85rem 1.25rem; border-radius: 8px; cursor: pointer; color: var(--text-secondary); font-weight: 500; font-size: 1.05rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 15px; }
+.nav-menu li:hover { background-color: var(--bg-hover); color: var(--text-primary); }
+.nav-menu li i { font-size: 1.15rem; width: 20px; text-align: center; }
+.nav-menu li:active { transform: scale(0.95); transition: transform 0.05s ease !important; }
+
+.btn-sidebar-back {
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;
+    background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981;
+    border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: inherit; font-size: 1rem;
+}
+.btn-sidebar-back:hover {
+    background: rgba(16, 185, 129, 0.2); box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); transform: translateY(-2px);
+}
+.btn-sidebar-back:active { transform: translateY(0) scale(0.95); }
+
+
+.system-status { margin-top: auto; background-color: #0f172a; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; font-size: 0.875rem; }
+.status-indicator { width: 10px; height: 10px; background-color: var(--status-accepted); border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px var(--status-accepted); animation: pulse 2s infinite; }
+.system-status span { font-weight: 600; color: var(--status-accepted); }
+.system-status small { color: var(--text-secondary); font-size: 0.75rem; }
+
+@keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    scrollbar-color: var(--border-color) var(--bg-main);
+}
+.main-content::-webkit-scrollbar { width: 8px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+.topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; }
+.header-titles h1 { font-size: 1.875rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; }
+.header-titles p { color: var(--text-secondary); font-size: 1rem; }
+.batch-selector label { font-size: 0.875rem; color: var(--text-secondary); margin-right: 0.5rem; }
+.batch-selector select { background-color: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 6px; font-family: inherit; cursor: pointer; }
+
+/* Metrics */
+.header-actions { display: flex; align-items: center; gap: 1.5rem; }
+.lang-switch-container { display: flex; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; padding: 4px; }
+.lang-btn { background: transparent; border: none; color: var(--text-secondary); padding: 5px 12px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; }
+.lang-btn.active { background: var(--accent-blue); color: white; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
+.lang-btn:hover:not(.active) { color: white; }
+.lang-btn:active { transform: scale(0.9); transition: transform 0.05s ease !important; }
+.batch-selector { display: flex; align-items: center; gap: 1rem; }
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.metric-card { background-color: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem; box-shadow: var(--shadow); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;}
+.metric-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.3); }
+.metric-card:active { transform: translateY(0) scale(0.95); transition: transform 0.05s ease !important; }
+.metric-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); color: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.metric-icon.alert { background: rgba(239, 68, 68, 0.1); color: var(--status-rejected); }
+.metric-icon.success { background: rgba(34, 197, 94, 0.1); color: var(--status-accepted); }
+.metric-data h3 { font-size: 0.875rem; color: var(--text-secondary); font-weight: 500; }
+.metric-data .value { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 0.25rem 0; font-variant-numeric: tabular-nums; }
+.trend { font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem; }
+.trend.up { color: var(--status-accepted); }
+.trend.down { color: var(--status-accepted); } /* Both good in context */
+.metric-card.highlight-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+/* Dashboard Grid */
+.dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+.card { background-color: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); padding: 1.5rem; box-shadow: var(--shadow); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.25); }
+.card:active { transform: translateY(0) scale(0.98); transition: transform 0.05s ease !important; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; } /* For table across full width later */
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+.card-header h2 { font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+
+/* Blinking dot */
+.blink { animation: blinker 1.5s linear infinite; color: var(--status-rejected); }
+@keyframes blinker { 50% { opacity: 0; } }
+.badge { background: rgba(34, 197, 94, 0.2); color: var(--status-accepted); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; border: 1px solid var(--status-accepted); }
+
+
+/* Live Analysis Component */
+.live-analysis-card { display: flex; flex-direction: column; }
+.analysis-container { display: flex; gap: 2rem; flex: 1; }
+
+.camera-feed { 
+    position: relative; 
+    width: 45%; 
+    border-radius: 4px; 
+    overflow: hidden; 
+    background: #020617; 
+    border: 1px solid rgba(59, 130, 246, 0.3); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 10px rgba(59, 130, 246, 0.1);
+    padding: 10px;
+    min-height: 480px;
+}
+.sci-fi-container::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    pointer-events: none;
+    z-index: 10;
+}
+.hud-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: #3b82f6;
+    border-style: solid;
+    z-index: 20;
+    pointer-events: none;
+}
+.hud-corner.top-left { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.hud-corner.top-right { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.hud-corner.bottom-left { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.hud-corner.bottom-right { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+.feed-img { width: 100%; height: 100%; object-fit: contain; filter: contrast(1.2); image-rendering: pixelated; position: relative; z-index: 5; }
+
+.feed-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 0%, transparent 50%, rgba(59, 130, 246, 0.1) 100%); pointer-events: none; z-index: 10;}
+.scanner-line { position: absolute; width: 100%; height: 2px; background: rgba(34, 197, 94, 0.8); box-shadow: 0 0 10px 2px rgba(34, 197, 94, 0.5); top: 0; animation: scan 3s linear infinite; z-index: 15;}
+@keyframes scan { 0% { top: 0; opacity: 1; } 50% { opacity: 0.5; } 100% { top: 100%; opacity: 1; } }
+
+/* Refined Legend */
+.heatmap-legend { position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.85); padding: 8px 12px; border-radius: 4px; font-size: 0.70rem; border: 1px solid rgba(59, 130, 246, 0.3); z-index: 15; }
+.heatmap-legend div { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; color: #e2e8f0; font-weight: 500;}
+.heatmap-legend div:last-child { margin-bottom: 0; }
+.color-box { width: 12px; height: 12px; border-radius: 2px; }
+.yellow { background: #eab308; }
+.blue { background: #3b82f6; }
+.purple { background: #3b0764; border: 1px solid #6b21a8; }
+
+/* Health Index Overlay */
+.health-index-overlay {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    padding: 10px 12px;
+    border-radius: 4px;
+    z-index: 15;
+    min-width: 160px;
+}
+.overlay-title { font-size: 0.8rem; font-weight: 400; letter-spacing: 1px; color: #e2e8f0; line-height: 1.2; margin-bottom: 8px; }
+.overlay-subtitle { font-size: 0.6rem; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
+.gradient-bar { height: 8px; background: linear-gradient(to right, #2563eb, #3b82f6, #10b981, #eab308); border-radius: 2px; margin-bottom: 4px; }
+.gradient-labels { display: flex; justify-content: space-between; font-size: 0.55rem; color: #cbd5e1; font-weight: 500;}
+
+
+.analysis-details { width: 55%; display: flex; flex-direction: column; }
+.analysis-details { width: 55%; display: flex; flex-direction: column; }
+.processing-steps-visual { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; background: rgba(0,0,0,0.2); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+.step-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; position: relative; width: 30%; }
+.step-card .icon-circle { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: var(--text-secondary); transition: all 0.3s ease; }
+.step-card.active .icon-circle { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+.step-card.pulse-step.active .icon-circle { animation: focusPulse 2s infinite; border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(139, 92, 246, 0.15); box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+.step-info { display: flex; flex-direction: column; gap: 2px; }
+.step-num { font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); opacity: 0.7; }
+.step-text { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.step-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; background: rgba(255,255,255,0.1); color: var(--text-secondary); }
+.step-card.active .step-status { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+.step-card.pulse-step.active .step-status { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; font-style: italic; }
+
+.step-connector { flex: 1; height: 3px; background: var(--border-color); margin: 0 5px; position: relative; top: -15px; border-radius: 2px; overflow: hidden; }
+.step-connector::after { content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%; background: linear-gradient(90deg, transparent, var(--accent-blue), transparent); animation: travelFlow 2s linear infinite; }
+
+@keyframes focusPulse {
+    0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+}
+@keyframes travelFlow {
+    0% { left: -50%; }
+    100% { left: 100%; }
+}
+
+.current-result { background: var(--bg-main); padding: 1.5rem; border-radius: 8px; border: 1px dashed var(--border-color); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.current-result h4 { color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; letter-spacing: 1px; text-transform: uppercase; }
+
+.detailed-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.metric-item { background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 6px; padding: 0.75rem; display: flex; flex-direction: column; }
+.metric-item .label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.metric-item .value { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+.damage-meter-container { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.5rem; }
+.damage-meter-container .label { font-size: 0.875rem; color: var(--text-secondary); }
+.damage-meter-container .value { font-size: 2rem; font-weight: 700; color: var(--status-rejected); }
+.progress-bar { width: 100%; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
+.progress-fill { height: 100%; transition: width 0.5s ease-in-out; }
+.status-rejected { color: var(--status-rejected); font-size: 1.5rem; letter-spacing: 2px; font-weight: 800; border: 2px solid var(--status-rejected); display: inline-block; padding: 0.25rem 1rem; border-radius: 4px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+.status-accepted { color: var(--status-accepted); font-size: 1.5rem; letter-spacing: 2px; font-weight: 800; border: 2px solid var(--status-accepted); display: inline-block; padding: 0.25rem 1rem; border-radius: 4px; box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
+.reason { margin-top: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+.reason i { color: var(--status-warning); }
+
+
+/* Chart Area */
+.chart-container { position: relative; height: 250px; width: 100%; display: flex; justify-content: center; }
+.chart-legend-custom { margin-top: 1.5rem; display: flex; justify-content: space-around; font-size: 0.875rem; font-weight: 500; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+.dot.accepted { background-color: var(--status-accepted); }
+.dot.rejected { background-color: var(--status-rejected); }
+
+
+/* Data Table Component */
+.btn-export { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.875rem; transition: background 0.2s; }
+.btn-export:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+.table-responsive { width: 100%; overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; text-align: left; }
+.data-table th { padding: 1rem; border-bottom: 2px solid var(--border-color); color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.data-table td { padding: 1rem; border-bottom: 1px solid rgba(51, 65, 85, 0.5); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+.data-table tbody tr:hover { background-color: rgba(255,255,255,0.02); }
+
+.tag-rejected { background: rgba(239, 68, 68, 0.15); color: #fca5a5; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(239, 68, 68, 0.3); }
+.tag-accepted { background: rgba(34, 197, 94, 0.15); color: #86efac; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(34, 197, 94, 0.3); }
+
+/* Animation for row insertion */
+@keyframes highlightNew {
+    0% { background-color: rgba(59, 130, 246, 0.2); }
+    100% { background-color: transparent; }
+}
+.new-row { animation: highlightNew 2s ease-out forwards; }
+
+/* Dashboard Tabs Control */
+#dashboard-tab { display: grid; }
+#roi-tab, #spectrum-tab { display: none; } /* Toggled via JS */
+
+/* ROI Tab Styles */
+.roi-container { display: flex; gap: 2rem; }
+.roi-inputs { width: 40%; display: flex; flex-direction: column; gap: 1rem; }
+.input-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.input-group label { font-size: 0.85rem; color: var(--text-secondary); }
+.roi-input { background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.75rem; border-radius: 6px; font-family: inherit; font-size: 1rem; transition: border-color 0.2s; }
+.roi-input:focus { outline: none; border-color: var(--accent-blue); }
+.roi-results { width: 60%; display: flex; flex-direction: column; gap: 1.5rem; }
+.roi-summary-card { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 8px; padding: 1.5rem; }
+.roi-summary-card.dark { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2); }
+.roi-summary-card h3 { font-size: 1rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 0.5rem; }
+.text-green { color: var(--status-accepted); font-size: 2.5rem; font-weight: 700; }
+.text-blue { color: var(--accent-blue); font-size: 2.5rem; font-weight: 700; }
+
+/* Spectrum Tab Styles */
+.spectrum-container { display: flex; gap: 2rem; background: #e5e7eb; padding: 1.5rem; border-radius: 8px; color: #111827; }
+.spectrum-visual { width: 35%; display: flex; flex-direction: column; }
+.spectrum-chart-wrapper { width: 65%; display: flex; flex-direction: column; }
+
+
+        
+        /* Fix logo visibility */
+        .logo-img { 
+            background: transparent; 
+            padding: 0; 
+            transition: transform 0.3s, filter 0.3s; 
+            filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.05));
+        }
+        
+        /* Smooth interactions for landing */
+        .btn, .nav-links a, .nav-menu li { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
+        .btn:active { transform: scale(0.95); transition: transform 0.05s ease !important;}
+        
+        .value-card, .customer-card, .impact-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .value-card:hover, .customer-card:hover, .impact-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3); 
+            border-color: rgba(16, 185, 129, 0.5); 
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(28, 37, 51, 0.9) 100%);
+        }
+        .value-card:active, .customer-card:active, .impact-card:active {
+            transform: translateY(0) scale(0.96);
+            transition: transform 0.05s ease !important;
+        }
+        
+        /* Table hover effects for landing */
+        .compare-table tbody tr { transition: background 0.3s; }
+        .compare-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+        
+        /* Fix for AOS */
+        .mock-dashboard { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        
+        /* Smooth scrolling to page anchors */
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        
+        /* Header Nav Links Hover & Active Effects */
+        .nav-links a {
+            position: relative;
+            padding-bottom: 5px;
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s;
+        }
+        
+        .nav-links a:active {
+            transform: scale(0.85) !important;
+            transition: transform 0.05s ease !important;
+            opacity: 0.8;
+        }
+        
+        .nav-links a.active {
+            color: var(--color-primary) !important;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--color-primary, #10b981);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); /* Glow */
+        }
+
+    
+        /* Typography Update */
+        :root {
+            --heading-font: 'Montserrat', sans-serif;
+            --font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, .hero-title, .section-header h2 {
+            font-family: var(--heading-font) !important;
+            letter-spacing: -0.5px;
+        }
+        
+        /* Fixed Logo Visibility for both Landing & Dashboard */
+        .logo-img, .brand-logo { 
+            background: transparent !important; 
+            padding: 0 !important; 
+            border-radius: 0 !important; 
+            box-shadow: none !important; 
+            transition: transform 0.3s !important; 
+            object-fit: contain !important;
+            max-width: 100% !important;
+            height: auto !important;
+            max-height: 105px !important; /* Huge logo size */
+        }
+        .logo-img:hover, .brand-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Fix Table Overflow */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1rem;
+        }
+        .compare-table {
+            min-width: 800px; /* Prevent squishing */
+        }
+        
+        /* Pricing Section Styles */
+        .pricing { padding: 5rem 0; }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .pricing-card:active {
+            transform: translateY(0) scale(0.98);
+            transition: transform 0.05s ease !important;
+        }
+        .pricing-card.standard {
+            border: 2px solid var(--accent-green);
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, var(--bg-card) 100%);
+        }
+        .pricing-card.highend {
+            border: 2px solid #eab308;
+            background: linear-gradient(180deg, rgba(234, 179, 8, 0.05) 0%, var(--bg-card) 100%);
+        }
+        .pricing-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        .pricing-card.standard .pricing-name { color: var(--accent-green); }
+        .pricing-card.highend .pricing-name { color: #eab308; }
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-family: var(--heading-font);
+        }
+        .pricing-price span { font-size: 1rem; color: var(--text-secondary); font-weight: 500;}
+        .pricing-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem; min-height: 45px;}
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+        }
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+        .pricing-features li:last-child { border-bottom: none; }
+        .pricing-features li i {
+            color: var(--accent-green);
+            margin-top: 4px;
+        }
+        .pricing-card.highend .pricing-features li i { color: #eab308; }
+        
+        .add-on-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .addon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .addon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .addon-card:active {
+            transform: translateY(0) scale(0.98);
+            transition: transform 0.05s ease !important;
+        }
+        .addon-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            color: var(--accent-blue);
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: var(--heading-font);
+        }
+        .addon-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .addon-table th, .addon-table td, .lease-table th, .lease-table td {
+            padding: 14px 8px; /* Increased padding */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Solid subtle line instead of dashed */
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+        .addon-table th { color: var(--text-secondary); font-weight: 600; text-align: left; }
+        .addon-table td.price { text-align: right; font-weight: 700; font-family: var(--heading-font); font-size: 1.05rem; letter-spacing: 0.5px;}
+        
+        .lease-table th { color: #e2e8f0; font-weight: 600; text-align: right; padding-bottom: 15px;}
+        .lease-table th.left { text-align: left; color: var(--text-secondary); }
+        .lease-table td { text-align: right; font-weight: 700; font-family: var(--heading-font); font-size: 1.05rem; letter-spacing: 0.5px;}
+        .lease-table td.left { text-align: left; font-family: var(--font-family); font-weight: 600; font-size: 0.95rem; }
+        .recommended-col { background: rgba(16, 185, 129, 0.1); border-radius: 8px; color: var(--accent-green) !important; position: relative;}
+        .lease-note { font-size: 0.85rem; color: var(--text-secondary); margin-top: 1.5rem; display: flex; align-items: center; gap: 8px;}
+        
+        @media (max-width: 992px) {
+            .pricing-grid, .add-on-grid { grid-template-columns: 1fr; }
+            .addon-table th, .addon-table td, .lease-table th, .lease-table td { font-size: 0.85rem; }
+        }
+
+    </style>
+
 </head>
-<body>
-    <div class="app-container">
+<body><div id="landing-page" style="transition: opacity 0.5s; width: 100%;">
+<!-- Gradient Background Elements -->
+    <div class="bg-gradient bg-teal"></div>
+    <div class="bg-gradient bg-blue"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <img src="assets/logo.png" alt="FruitCare AI" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">Châm Ngôn 3D</a></li>
+                <li><a href="#customers">Insight</a></li>
+                <li><a href="#comparison">Giải Pháp</a></li>
+                <li><a href="#impact">Tác Động</a></li>
+                <li><a href="#pricing">Mô Hình</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#dashboard" class="btn btn-primary">
+                    <i class="fa-solid fa-desktop"></i> Trải Nghiệm Demo
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <div class="hero-text" data-aos="fade-up">
+                <div class="badge-pill">CÔNG NGHỆ SIÊU QUANG PHỔ HYPERSPECTRAL</div>
+                <h1 class="hero-title">
+                    AI CHUẨN HOÁ CHẤT LƯỢNG <span class="text-gradient">NÔNG SẢN VIỆT</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Kiến tạo vị thế mới bằng Châm Ngôn 3D. Giải pháp đột phá phân tích quang phổ giúp phát hiện hư hỏng, dập nát từ bên trong mà mắt thường không thể nhìn thấy.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#comparison" class="btn btn-primary btn-lg">Khám Phá Ngay</a>
+                    <a href="#dashboard" class="btn btn-outline btn-lg"><i class="fa-solid fa-play"></i> Xem Bảng Điều Khiển</a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="zoom-in" data-aos-delay="200">
+                <!-- Using a mock UI representation of the dashboard as hero image or generic sci-fi tech image -->
+                <div class="mock-dashboard">
+                    <div class="mock-header"></div>
+                    <div class="mock-body">
+                        <div class="mock-sidebar"></div>
+                        <div class="mock-main">
+                            <div class="mock-chart"></div>
+                            <div class="mock-cards">
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values (Châm Ngôn 3D) -->
+    <section class="core-values" id="about">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>CHÂM NGÔN <span class="text-gradient">3D</span></h2>
+                <p>Nền tảng giá trị cốt lõi của hệ thống FruitCare AI</p>
+            </div>
+            <div class="values-grid">
+                <!-- ĐỒNG BỘ -->
+                <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-icon"><i class="fa-solid fa-rotate"></i></div>
+                    <h3>ĐỒNG BỘ</h3>
+                    <p>Chuẩn hoá chất lượng nhất quán giữa các lô hàng, giữa các vùng trồng và đồng bộ hoá thông tin giữa các khâu trong chuỗi cung ứng.</p>
+                </div>
+                <!-- ĐÁNG TIN -->
+                <div class="value-card highlighted" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>ĐÁNG TIN</h3>
+                    <p>Xây dựng niềm tin vững chắc tựa trên dữ liệu định lượng chính xác thay vì phụ thuộc vào kinh nghiệm chủ quan của con người.</p>
+                </div>
+                <!-- ĐỘT PHÁ -->
+                <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-icon"><i class="fa-solid fa-rocket"></i></div>
+                    <h3>ĐỘT PHÁ</h3>
+                    <p>Thay đổi hoàn toàn cách ngành nông sản truyền thống đánh giá, phân loại và xác nhận chất lượng sản phẩm xuất khẩu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customers & Insights -->
+    <section class="customers" id="customers">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>KHÁCH HÀNG MỤC TIÊU & <span class="text-gradient">INSIGHT</span></h2>
+            </div>
+            
+            <div class="insight-box" data-aos="fade-up">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+                <p>"Trong nông sản, <span class="text-highlight">chất lượng thuộc về người trồng</span> nhưng <span class="text-highlight">quyền định giá lại thuộc về người mua</span>. Vậy nên chúng tôi muốn có 1 giải pháp đảm bảo đồng bộ chất lượng, ổn định, rủi ro thấp, có thể đem đi đàm phán để tránh bị ép giá và có dữ liệu minh bạch."</p>
+            </div>
+
+            <div class="customers-grid">
+                <div class="customer-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="customer-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>Hợp Tác Xã & Chủ Hộ</h3>
+                    <p class="customer-desc">Quy mô vừa (5-20 ha), vùng trồng trọng điểm, định hướng xuất khẩu.</p>
+                    <ul class="customer-needs">
+                        <li><i class="fa-solid fa-triangle-exclamation text-red"></i> <strong>Rủi ro:</strong> Bị trả hàng do phân loại thủ công không đều.</li>
+                        <li><i class="fa-solid fa-bolt text-yellow"></i> <strong>Vấn đề:</strong> Bị động khi đàm phán giá với thương lái.</li>
+                        <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Nhu cầu:</strong> Chuẩn hóa quy trình để nâng cao giá trị.</li>
+                    </ul>
+                </div>
+                <div class="customer-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="customer-icon"><i class="fa-solid fa-industry"></i></div>
+                    <h3>Cơ Sở Sơ Chế & Đóng Gói</h3>
+                    <p class="customer-desc">Trung gian giữa nông hộ và doanh nghiệp xuất khẩu (Packhouses).</p>
+                    <ul class="customer-needs">
+                        <li><i class="fa-solid fa-triangle-exclamation text-red"></i> <strong>Rủi ro:</strong> Sai sót nhân công khi vận hành cường độ cao.</li>
+                        <li><i class="fa-solid fa-bolt text-yellow"></i> <strong>Vấn đề:</strong> Thiếu công cụ kiểm soát nhanh và chính xác.</li>
+                        <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Nhu cầu:</strong> Tối ưu vận hành, lưu trữ dữ liệu minh bạch.</li>
+                    </ul>
+                </div>
+                <div class="customer-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="customer-icon"><i class="fa-solid fa-ship"></i></div>
+                    <h3>Doanh Nghiệp Xuất Khẩu SME</h3>
+                    <p class="customer-desc">Cần đảm bảo tiêu chuẩn quốc tế cho các lô hàng đi thị trường khó tính.</p>
+                    <ul class="customer-needs">
+                        <li><i class="fa-solid fa-triangle-exclamation text-red"></i> <strong>Rủi ro:</strong> Chất lượng không đồng đều giữa các lô hàng.</li>
+                        <li><i class="fa-solid fa-bolt text-yellow"></i> <strong>Vấn đề:</strong> Khó truy xuất nguồn gốc khi có khiếu nại.</li>
+                        <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Nhu cầu:</strong> Hệ thống kiểm định đồng bộ chuẩn quốc tế.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="comparison" id="comparison">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>GIẢI PHÁP <span class="text-gradient">VƯỢT TRỘI</span></h2>
+                <p>So sánh năng lực FruitCare AI trên thị trường</p>
+            </div>
+            <div class="table-container" data-aos="fade-in">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-col">Tiêu chí so sánh</th>
+                            <th class="brand-col active-brand">
+                                <div class="brand-badge"><i class="fa-solid fa-star"></i> KHUYÊN DÙNG</div>
+                                <h3>FruitCare AI</h3>
+                                <span>Giải pháp toàn diện</span>
+                            </th>
+                            <th class="brand-col">
+                                <h3>Máy Nhập Khẩu</h3>
+                                <span>Truyền thống (EU/China)</span>
+                            </th>
+                            <th class="brand-col">
+                                <h3>Startup AI RGB</h3>
+                                <span>Camera thường</span>
+                            </th>
+                            <th class="brand-col">
+                                <h3>QC Thủ Công</h3>
+                                <span>Nhân công</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name"><i class="fa-solid fa-wave-square"></i> Công nghệ Hyperspectral</td>
+                            <td class="status-yes"><i class="fa-solid fa-check-circle"></i></td>
+                            <td class="status-no"><i class="fa-solid fa-xmark"></i></td>
+                            <td class="status-no"><i class="fa-solid fa-xmark"></i></td>
+                            <td class="status-none">—</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"><i class="fa-solid fa-eye-slash"></i> Phát hiện dập/hư bên trong</td>
+                            <td class="status-yes highlight-cell"><i class="fa-solid fa-check"></i> Chính xác cao</td>
+                            <td class="status-no"><i class="fa-solid fa-xmark"></i></td>
+                            <td class="status-no"><i class="fa-solid fa-xmark"></i></td>
+                            <td class="status-bad"><i class="fa-solid fa-xmark"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"><i class="fa-brands fa-apple"></i> Đánh giá độ chín (Deep Learning)</td>
+                            <td class="status-yes"><i class="fa-solid fa-check-circle"></i></td>
+                            <td class="status-mid">Chỉ màu sắc</td>
+                            <td class="status-mid">Chỉ màu sắc</td>
+                            <td class="status-bad">Cảm tính</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"><i class="fa-solid fa-chart-pie"></i> Dashboard & Báo cáo lô hàng</td>
+                            <td class="status-yes"><i class="fa-solid fa-check-circle"></i></td>
+                            <td class="status-mid"><i class="fa-solid fa-check"></i></td>
+                            <td class="status-mid">Cơ bản</td>
+                            <td class="status-bad"><i class="fa-solid fa-xmark"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"><i class="fa-solid fa-database"></i> Lưu trữ hình ảnh minh chứng</td>
+                            <td class="status-yes"><i class="fa-solid fa-check-circle"></i></td>
+                            <td class="status-no"><i class="fa-solid fa-xmark"></i></td>
+                            <td class="status-mid">Hạn chế</td>
+                            <td class="status-no"><i class="fa-solid fa-xmark"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"><i class="fa-solid fa-headset"></i> Hỗ trợ kỹ thuật nội địa</td>
+                            <td class="status-yes">24/7 On-site</td>
+                            <td class="status-bad">Chậm/Từ xa</td>
+                            <td class="status-yes">Tốt</td>
+                            <td class="status-none">N/A</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"><i class="fa-solid fa-wallet"></i> Chi phí đầu tư & Vận hành</td>
+                            <td class="status-yes">Tối ưu / Linh hoạt</td>
+                            <td class="status-bad">Rất cao</td>
+                            <td class="status-mid">Trung bình</td>
+                            <td class="status-bad">Cao (Nhân sự)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social & Environment Impact -->
+    <section class="impact" id="impact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>TÁC ĐỘNG XÃ HỘI – <span class="text-gradient">MÔI TRƯỜNG</span></h2>
+            </div>
+            
+            <div class="impact-grid">
+                <!-- Giảm Lãng Phí -->
+                <div class="impact-card border-green" data-aos="fade-up" data-aos-delay="100">
+                    <div class="impact-header text-green">
+                        <i class="fa-solid fa-recycle"></i>
+                        <h3>Giảm Lãng Phí & Rủi Ro Trả Hàng</h3>
+                    </div>
+                    <p class="impact-desc">Phát hiện sớm hư hỏng bề mặt và bất thường bên trong, giúp tối ưu hóa nguồn lực và giảm thiểu rác thải nông nghiệp.</p>
+                    <div class="impact-stats">
+                        <div class="stat-item">
+                            <h4 class="text-green">15-30%</h4>
+                            <span>GIẢM THẤT THOÁT SAU THU HOẠCH</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-green">50-70%</h4>
+                            <span>GIẢM SAI SÓT PHÂN LOẠI</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-green">< 2%</h4>
+                            <span>TỶ LỆ TRẢ HÀNG (RETURNS)</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-green">5-10%</h4>
+                            <span>TĂNG GIÁ TRỊ BÁN RA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minh Bạch Hóa -->
+                <div class="impact-card border-blue" data-aos="fade-up" data-aos-delay="200">
+                    <div class="impact-header text-blue">
+                        <i class="fa-solid fa-database"></i>
+                        <h3>Minh Bạch Hóa Bằng Dữ Liệu Số</h3>
+                    </div>
+                    <p class="impact-desc">Số hóa từng lô hàng giúp doanh nghiệp chủ động trong kiểm định, truy xuất nguồn gốc và xử lý khiếu nại nhanh chóng.</p>
+                    <div class="impact-stats">
+                        <div class="stat-item">
+                            <h4 class="text-blue">100%</h4>
+                            <span>LÔ HÀNG ĐƯỢC SỐ HÓA</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-blue">&ge; 40%</h4>
+                            <span>GIẢM THỜI GIAN XỬ LÝ KHIẾU NẠI</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-blue">36 Tháng</h4>
+                            <span>LƯU TRỮ DỮ LIỆU LỊCH SỬ</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-blue">TRUST</h4>
+                            <span>TĂNG NIỀM TIN BUYER</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nâng Chuẩn Xuất Khẩu -->
+                <div class="impact-card border-red" data-aos="fade-up" data-aos-delay="100">
+                    <div class="impact-header text-red">
+                        <i class="fa-solid fa-earth-americas"></i>
+                        <h3>Nâng Chuẩn Xuất Khẩu & Cạnh Tranh Quốc Tế</h3>
+                    </div>
+                    <p class="impact-desc">Chuẩn hóa quy trình đánh giá chất lượng bằng AI, loại bỏ yếu tố cảm tính, giúp nông sản Việt đáp ứng các thị trường khó tính.</p>
+                    <div class="impact-stats">
+                        <div class="stat-item">
+                            <h4 class="text-red">&ge; 20%</h4>
+                            <span>TĂNG TỶ LỆ ĐẠT CHUẨN XK</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-red">10-15%</h4>
+                            <span>TĂNG DOANH THU PREMIUM</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-red">GLOBAL</h4>
+                            <span>CHUẨN GLOBALGAP/EUROGAP</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-red">LONG-TERM</h4>
+                            <span>GIA TĂNG HỢP ĐỒNG DÀI HẠN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tác Động Ngành -->
+                <div class="impact-card border-purple" data-aos="fade-up" data-aos-delay="200">
+                    <div class="impact-header text-purple">
+                        <i class="fa-solid fa-gears"></i>
+                        <h3>Tác Động Ngành (Industry Impact)</h3>
+                    </div>
+                    <p class="impact-desc">Thúc đẩy chuyển đổi số nông nghiệp từ kinh nghiệm sang dữ liệu, xây dựng bản đồ chất lượng nông sản quốc gia.</p>
+                    <div class="impact-stats">
+                        <div class="stat-item">
+                            <h4 class="text-purple"><i class="fa-solid fa-arrow-trend-up"></i></h4>
+                            <span>SỐ ĐƠN VỊ ÁP DỤNG QC AI</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-purple"><i class="fa-solid fa-globe"></i></h4>
+                            <span>TỶ LỆ ĐẠT CHUẨN QUỐC TẾ</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-purple">DATASET</h4>
+                            <span>DỮ LIỆU CHẤT LƯỢNG VÙNG TRỒNG</span>
+                        </div>
+                        <div class="stat-item">
+                            <h4 class="text-purple">5-10%</h4>
+                            <span>NÂNG CAO THƯƠNG HIỆU VIỆT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Pricing / Business Model -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>MÔ HÌNH <span class="text-gradient">KINH DOANH</span></h2>
+                <p>Các gói giải pháp linh hoạt dành cho mọi quy mô doanh nghiệp</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <!-- CƠ BẢN -->
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="pricing-name">Cơ Bản (Basic)</div>
+                    <div class="pricing-price">160<span>Tr VNĐ</span></div>
+                    <div class="pricing-desc">Gói phân loại & lưu trữ cơ bản, dành cho hợp tác xã quy mô nhỏ.</div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-check"></i> Công suất 240kg/h (Hyperspectral)</li>
+                        <li><i class="fa-solid fa-check"></i> Phân loại chín/chưa chín</li>
+                        <li><i class="fa-solid fa-check"></i> Dashboard theo dõi sản lượng</li>
+                        <li><i class="fa-solid fa-check"></i> Lưu dữ liệu 12 tháng</li>
+                        <li><i class="fa-solid fa-bullseye" style="color:var(--accent-blue)"></i> Độ chính xác >98.92%</li>
+                    </ul>
+                </div>
+                
+                <!-- TIÊU CHUẨN -->
+                <div class="pricing-card standard" data-aos="fade-up" data-aos-delay="200">
+                    <div class="pricing-name">Tiêu Chuẩn (Standard)</div>
+                    <div class="pricing-price">200<span>Tr VNĐ</span></div>
+                    <div class="pricing-desc">Kiểm soát nấm & xuất khẩu, phù hợp đại đa số xưởng đóng gói.</div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-circle-plus"></i> <strong style="color:white">Toàn bộ tính năng Cơ bản</strong></li>
+                        <li><i class="fa-solid fa-check"></i> Công suất 350kg/h (Nâng cao)</li>
+                        <li><i class="fa-solid fa-check"></i> Phát hiện nấm trắng/hư bề mặt</li>
+                        <li><i class="fa-solid fa-check"></i> Phân tích chất lượng theo lô</li>
+                        <li><i class="fa-solid fa-check"></i> Web dashboard nâng cao</li>
+                        <li><i class="fa-solid fa-check"></i> Lưu cloud 24 tháng + Xuất file</li>
+                    </ul>
+                </div>
+
+                <!-- CAO CẤP -->
+                <div class="pricing-card highend" data-aos="fade-up" data-aos-delay="300">
+                    <div class="pricing-name">Cao Cấp (Highend)</div>
+                    <div class="pricing-price">250<span>Tr VNĐ</span></div>
+                    <div class="pricing-desc">Phát hiện sâu & Tích hợp ERP, dành cho nhà máy lớn.</div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-star"></i> <strong style="color:white">Toàn bộ tính năng Tiêu chuẩn</strong></li>
+                        <li><i class="fa-solid fa-check"></i> Công suất 500kg/h (Tối đa)</li>
+                        <li><i class="fa-solid fa-check"></i> Phát hiện bất thường sâu (HSI)</li>
+                        <li><i class="fa-solid fa-check"></i> Dự đoán rủi ro hư hỏng</li>
+                        <li><i class="fa-solid fa-check"></i> Cảnh báo Real-time & API ERP</li>
+                        <li><i class="fa-solid fa-check"></i> AI Grading chuẩn EU/Nhật Bản</li>
+                        <li><i class="fa-solid fa-check"></i> Ưu tiên hỗ trợ kỹ thuật 24/7</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="add-on-grid">
+                <!-- Nâng cấp & Module -->
+                <div class="addon-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="addon-header"><i class="fa-solid fa-arrow-up-right-dots"></i> Gói Nâng Cấp & Module Lẻ</div>
+                    <table class="addon-table">
+                        <thead>
+                            <tr>
+                                <th>NÂNG CẤP GÓI</th>
+                                <th style="text-align:right">GIÁ (VNĐ)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Basic &rarr; Standard</td>
+                                <td class="price">30.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Standard &rarr; Highend</td>
+                                <td class="price">40.000.000</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2" style="padding-top: 20px;">MODULE ADD-ON (LẺ)</th>
+                            </tr>
+                            <tr>
+                                <td>Module Nấm</td>
+                                <td class="price">30.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Data 1 loại quả mới</td>
+                                <td class="price">40.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>API ERP Integration</td>
+                                <td class="price">20.000.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mô hình trả góp -->
+                <div class="addon-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="addon-header"><i class="fa-solid fa-handshake"></i> Mô Hình Thuê & Trả Góp (Lease-to-own)</div>
+                    <table class="addon-table lease-table">
+                        <thead>
+                            <tr>
+                                <th class="left">GÓI</th>
+                                <th>THUÊ (3 Tháng)<br><span style="font-size:0.75rem;font-weight:400;color:#94a3b8">(Trả 1 lần)</span></th>
+                                <th>GÓP (6 Tháng)</th>
+                                <th class="recommended-col">GÓP (12 Tháng)<br><span style="font-size:0.75rem;font-weight:400;color:var(--accent-green)">(Khuyên dùng)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="left">Basic</td>
+                                <td>25.000.000</td>
+                                <td>172.000.000</td>
+                                <td class="recommended-col">190.000.000</td>
+                            </tr>
+                            <tr>
+                                <td class="left">Standard</td>
+                                <td>30.000.000</td>
+                                <td>215.000.000</td>
+                                <td class="recommended-col">236.000.000</td>
+                            </tr>
+                            <tr>
+                                <td class="left">Highend</td>
+                                <td>40.000.000</td>
+                                <td>269.000.000</td>
+                                <td class="recommended-col">295.000.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="lease-note">
+                        <i class="fa-solid fa-circle-info"></i> Sinh lời ngay từ tháng đầu tiên. Hỗ trợ kỹ thuật ưu tiên cho gói 12 tháng.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <footer class="footer">
+        <div class="container text-center" data-aos="zoom-in">
+            <h2>Sẵn sàng nâng tầm chất lượng nông sản của bạn?</h2>
+            <p>Liên hệ ngay hoặc thử nghiệm bảng điều khiển AI của chúng tôi để xem khả năng thực tế.</p>
+            <div style="margin-top: 2rem;">
+                <a href="#dashboard" class="btn btn-primary btn-lg" style="margin-right: 15px;">Mở Bảng Điều Khiển</a>
+                <a href="mailto:thiennhan.math@gmail.com" class="btn btn-outline btn-lg"><i class="fa-solid fa-envelope"></i> Liên Hệ Tư Vấn</a>
+            </div>
+            <div style="margin-top: 1.5rem; font-size: 1.1rem; color: var(--text-gray-light);">
+                <span style="color: var(--text-secondary);">Liên hệ tư vấn:</span> <a href="mailto:thiennhan.math@gmail.com" style="color: var(--accent-blue); font-weight: 600;">thiennhan.math@gmail.com</a>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 FruitCare AI. Chuẩn hoá nông sản Việt.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+</div>
+
+<div id="dashboard-app" style="display: none; opacity: 0; transition: opacity 0.5s; width: 100vw; height: 100vh; overflow: hidden; position: fixed; top: 0; left: 0; z-index: 9999; background-color: var(--bg-main);">
+<div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-header" style="justify-content: center; padding: 1rem 0;">
-                <img src="assets/logo.png" alt="FruitCare AI" class="brand-logo">
+            <div class="sidebar-header" style="justify-content: flex-start; padding: 0.5rem 0; margin-bottom: 2rem;">
+                <i class="fa-solid fa-leaf text-glow"></i>
+                <h2>FruitCare <span class="highlight">AI</span></h2>
             </div>
-            <ul class="nav-menu">
+            
+            <!-- Back to Home Action Button -->
+            <div style="margin-bottom: 2rem; padding: 0 5px;">
+                <button id="nav-back-home" class="btn-sidebar-back">
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="backHome">Về Trang Chủ</span>
+                </button>
+            </div>
+            
+            <ul class="nav-menu" style="margin-top: 0;">
                 <li class="active" id="nav-dashboard"><i class="fa-solid fa-chart-pie"></i> <span data-i18n="dashboardNav">Dashboard</span></li>
                 <li id="nav-spectrum"><i class="fa-solid fa-wave-square" style="transform: scaleX(-1) rotate(-90deg);"></i> <span data-i18n="spectrumNav">Spectrum Analysis</span></li>
                 <li style="display: none;"><i class="fa-solid fa-video"></i> Live Inspection</li>
@@ -320,6 +1386,66 @@
 
         </main>
     </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
+
+    <script src="dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const landingPage = document.getElementById('landing-page');
+            const dashboardApp = document.getElementById('dashboard-app');
+            const demoBtns = document.querySelectorAll('a[href="#dashboard"]');
+            const backBtn = document.getElementById('nav-back-home');
+            
+            // Switch to Dashboard
+            demoBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Fade out landing
+                    landingPage.style.opacity = '0';
+                    document.body.style.overflow = 'hidden'; // prevent scrolling behind
+                    
+                    setTimeout(() => {
+                        landingPage.style.display = 'none';
+                        dashboardApp.style.display = 'block';
+                        
+                        // Force layout reflow
+                        void dashboardApp.offsetWidth;
+                        
+                        dashboardApp.style.opacity = '1';
+                        
+                        // Wait for display transition then resize chart
+                        setTimeout(() => {
+                            window.dispatchEvent(new Event('resize'));
+                        }, 100);
+                        
+                    }, 500); // match transition time
+                });
+            });
+            
+            // Go back to Landing Page
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    dashboardApp.style.opacity = '0';
+                    setTimeout(() => {
+                        dashboardApp.style.display = 'none';
+                        landingPage.style.display = 'block';
+                        
+                        // Force layout reflow
+                        void landingPage.offsetWidth;
+                        
+                        landingPage.style.opacity = '1';
+                        document.body.style.overflow = 'auto'; // allow scroll again
+                        
+                        if(typeof AOS !== 'undefined') AOS.refresh();
+                    }, 500);
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
