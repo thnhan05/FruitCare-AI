@@ -1,5 +1,23 @@
-// Initialize AOS Animation
+// Initialize AOS Animation and Page Transition
 document.addEventListener('DOMContentLoaded', () => {
+    // Smooth Page Fade In
+    setTimeout(() => document.body.classList.add('loaded'), 50);
+
+    // Smooth Page Fade Out on Navigation
+    document.querySelectorAll('a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href && !href.startsWith('#') && !href.startsWith('mailto') && this.getAttribute('target') !== '_blank') {
+                e.preventDefault();
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 400);
+            }
+        });
+    });
+
     AOS.init({
         duration: 800,
         easing: 'ease-in-out',

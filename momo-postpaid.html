@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoMo Postpaid Wallet - FruitCare AI Financing</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        .momo-gradient-text {
+            background: linear-gradient(135deg, #A50064, #D82D8B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .momo-gradient-bg {
+            background: linear-gradient(135deg, #A50064, #D82D8B);
+            color: white;
+        }
+        .momo-shadow {
+            box-shadow: 0 10px 20px rgba(165,0,100,0.2);
+        }
+        /* Custom styles for tables specifically in this page to fit modern aesthetic */
+        .modern-table-wrapper {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: auto;
+            border: 1px solid var(--glass-border);
+        }
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        .modern-table th, .modern-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid #F1F5F9;
+        }
+        .modern-table th {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        .modern-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .modern-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+        .article-box {
+            background: var(--bg-white);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        .article-box:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+            border-left-width: 6px;
+        }
+        .article-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .article-box p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header scrolled" style="box-shadow: 0 4px 20px -2px rgba(165,0,100, 0.08);">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="IMG/logo.png" alt="FruitCare AI" style="max-height: 80px; width: auto; object-fit: contain;">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html" style="font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" style="min-height: 80vh; background: linear-gradient(135deg, var(--bg-blue-light), #FDF2F8); padding-top: 8rem; position: relative; overflow: hidden;">
+        <div class="hero-bg-shapes">
+            <div class="shape shape-1" style="background: rgba(216, 45, 139, 0.15); width: 800px; height: 800px; right: -10%; top: -20%;"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <div class="container hero-container" style="display: block; text-align: center; z-index: 1;">
+            <div class="hero-content" data-aos="zoom-in" data-aos-duration="800" style="max-width: 900px; margin: 0 auto;">
+                <div class="badge" style="background: rgba(216, 45, 139, 0.1); color: #D82D8B; border: 1px solid rgba(216, 45, 139, 0.2);"><i class="fa-solid fa-handshake"></i> Strategic Financial Partnership</div>
+                <h1 class="hero-title" style="font-size: 3.5rem;">Invest in World-Class Technology <br> <span class="momo-gradient-text">Without Financial Pressure</span></h1>
+                <p class="hero-subtitle">Digitize your agricultural quality control process today. FruitCare AI, in partnership with MoMo Postpaid Wallet, offers flexible installment plans of up to 12 months - empowering SMEs to upgrade product quality while preserving healthy cash flow.</p>
+                <div class="hero-cta" style="justify-content: center;">
+                    <a href="https://docs.google.com/document/d/19zb7DyXRhoCQHhm_iek1hmQorR9BCm4XWaDMR2q1K-s/edit?tab=t.0" target="_blank" class="btn btn-outline" style="border-color: #D82D8B; color: #D82D8B;"><i class="fa-solid fa-book-open"></i> Read Policies</a>
+                    <a href="https://www.momo.vn/vi-tra-sau" target="_blank" class="btn btn-primary momo-gradient-bg momo-shadow" style="border: none;"><i class="fa-solid fa-bolt"></i> Start Installment Plan</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Participating Parties (Grid) -->
+    <section class="section" id="parties">
+        <div class="container">
+            <div class="section-header text-center" data-aos="fade-up">
+                <h2 class="section-title">A Three-Sided Value Ecosystem</h2>
+                <p class="section-desc">Benefits & Responsibilities of Participating Parties</p>
+            </div>
+            
+            <div class="grid-3">
+                <!-- Customer Card -->
+                <div class="tech-card" data-aos="fade-up" data-aos-delay="100" style="text-align: left;">
+                    <div class="tech-icon" style="background: rgba(216, 45, 139, 0.1); color: #D82D8B;"><i class="fa-solid fa-users"></i></div>
+                    <h3 style="color: #D82D8B;">1. Customers (SMEs/Co-ops)</h3>
+                    <p><strong>Benefits:</strong> "Buy now, pay later" without complex income verification. Converts invoices to installments. Protects cash flow from seasonal risks.</p>
+                    <hr style="margin: 1.2rem 0; border: none; border-top: 1px dashed #E2E8F0;">
+                    <p><strong>Responsibilities:</strong> Must maintain a good CIC credit profile, settle balances on time, and pay applicable fees.</p>
+                </div>
+                <!-- FruitCare Card -->
+                <div class="tech-card" data-aos="fade-up" data-aos-delay="200" style="text-align: left;">
+                    <div class="tech-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>2. FruitCare AI (Provider)</h3>
+                    <p><strong>Benefits:</strong> Removes price barriers, ensures immediate or predictable cash flow, and drives customer retention with embedded finance.</p>
+                    <hr style="margin: 1.2rem 0; border: none; border-top: 1px dashed #E2E8F0;">
+                    <p><strong>Responsibilities:</strong> Acts as first-layer risk filter (checking business capacity) and reserves operational enforcement rights.</p>
+                </div>
+                <!-- MoMo Card -->
+                <div class="tech-card" data-aos="fade-up" data-aos-delay="300" style="text-align: left; border: 1px solid #FDF2F8; box-shadow: 0 10px 25px rgba(216, 45, 139, 0.15);">
+                    <div class="tech-icon momo-gradient-bg"><i class="fa-solid fa-wallet"></i></div>
+                    <h3 class="momo-gradient-text">3. MoMo (Credit Partner)</h3>
+                    <p><strong>Benefits:</strong> Acquires high-quality B2B users, diversifies revenue via fees, and minimizes capital risk via dual underwriting.</p>
+                    <hr style="margin: 1.2rem 0; border: none; border-top: 1px dashed #E2E8F0;">
+                    <p><strong>Responsibilities:</strong> Final credit approval, limit allocation, disbursement, and imposing dual-lock risk control.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terms & Conditions Split Layout -->
+    <section class="section bg-light" id="details">
+        <div class="container">
+            <div class="section-container">
+                <!-- Left Content -->
+                <div class="text-content" data-aos="fade-right">
+                    <h2 class="section-title">MoMo Postpaid Terms</h2>
+                    <p style="color: var(--text-light); margin-bottom: 2.5rem; font-size: 1.1rem;">To activate the MoMo Postpaid Wallet, customers must satisfy the following basic eligibility requirements:</p>
+                    
+                    <ul class="analysis-points">
+                        <li>
+                            <i class="fa-solid fa-id-card text-primary" style="font-size: 1.5rem; margin-top: 0.2rem;"></i> 
+                            <div>
+                                <strong style="font-size: 1.1rem; color: var(--text-dark);">Identity Verification</strong>
+                                <p style="color: var(--text-light); margin-top: 0.3rem;">Completed CCCD verification and successfully linked a valid bank account on the MoMo platform.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-building-columns text-primary" style="font-size: 1.5rem; margin-top: 0.2rem;"></i> 
+                            <div>
+                                <strong style="font-size: 1.1rem; color: var(--text-dark);">Clean Credit Record</strong>
+                                <p style="color: var(--text-light); margin-top: 0.3rem;">Maintain a good credit history in State Bank of Vietnam (CIC), with no bad debt or non-performing loans (NPLs).</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check-double text-primary" style="font-size: 1.5rem; margin-top: 0.2rem;"></i> 
+                            <div>
+                                <strong style="font-size: 1.1rem; color: var(--text-dark);">Final Approval</strong>
+                                <p style="color: var(--text-light); margin-top: 0.3rem;">Meet all lending criteria and obtain final approval from MoMo's designated Credit Partner.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Right Content (Glass Card) -->
+                <div class="image-content" data-aos="fade-left">
+                    <div class="pricing-card standard-card" style="border-color: #D82D8B; box-shadow: 0 20px 40px rgba(216, 45, 139, 0.15);">
+                        <div class="card-header">
+                            <div class="card-title momo-gradient-text">CREDIT LIMIT</div>
+                            <div class="card-price" style="font-size: 2.2rem; color: var(--text-dark);">1.0M - 30.0M <span style="font-size: 1rem; color: var(--text-light);">VND</span></div>
+                            <div class="card-subtitle" style="border-bottom-color: #FDF2F8;">0% Interest Rate Base</div>
+                        </div>
+                        <ul class="card-features">
+                            <li><i class="fa-solid fa-check" style="color: #D82D8B;"></i> <span>Activation Fee: Free</span></li>
+                            <li><i class="fa-solid fa-check" style="color: #D82D8B;"></i> <span>Service Fee: 30,000 VND/month</span></li>
+                            <li><i class="fa-solid fa-circle-info text-blue"></i> <span>Waived for the first 5 transactions</span></li>
+                            <li><i class="fa-solid fa-clock-rotate-left text-yellow"></i> <span>Late Fee applies per overdue day</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extended Policies & Articles -->
+    <section class="section" id="articles">
+        <div class="container">
+            <div class="section-header text-center" data-aos="fade-up">
+                <h2 class="section-title">FruitCare AI B2B Policy</h2>
+                <p class="section-desc">Risk Pre-Screening & Dual-Lock Architecture</p>
+            </div>
+            
+            <div style="max-width: 900px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--glass-border);" data-aos="fade-up" data-aos-delay="100">
+                <p style="margin-bottom: 2rem; color: var(--text-dark); font-size: 1.05rem;"><i class="fa-solid fa-scale-balanced" style="color: var(--secondary);"></i> FruitCare AI requires business customers to provide <strong>Annual Financial Statements (AFS)</strong> and <strong>Historical Business Performance Data</strong> to act as a first-layer quality filter, minimizing risk for the ecosystem.</p>
+
+                <!-- Article 1 -->
+                <div class="article-box">
+                    <h4><i class="fa-solid fa-clipboard-check"></i> ARTICLE 1. DUAL UNDERWRITING</h4>
+                    <p>Business capability is assessed using AFS and performance data ensuring ROI can cover repayment obligations. MoMo verifies legal compliance, bank links, and CIC credit profile.</p>
+                </div>
+                
+                <!-- Article 2 -->
+                <div class="article-box">
+                    <h4><i class="fa-solid fa-money-bill-transfer"></i> ARTICLE 2. B2B INSTALLMENT CONVERSION</h4>
+                    <p>Applies to Basic, Standard, and Premium FruitCare AI packages. Supported tenures up to 12 months. Prepayment is not allowed for FruitCare AI systems via Postpaid Wallet.</p>
+                </div>
+                
+                <!-- Article 3 -->
+                <div class="article-box">
+                    <h4><i class="fa-solid fa-umbrella-beach"></i> ARTICLE 3. SEASONAL CASH FLOW PROTECTION</h4>
+                    <p>Supports seasonal export fluctuations. Customers can use the Minimum Payment feature (15% of balance). The remaining 85% is carried forward without being classified as bad debt.</p>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="article-box">
+                    <h4><i class="fa-solid fa-receipt"></i> ARTICLE 4. SERVICE FEES & CHARGES</h4>
+                    <p>Transparent MoMo wallet fees apply: VND 30k maintenance fee (from 6th month), Installment Conversion fee depending on tenure (3/6/9/12 mos), and 6.3% Minimum Payment fee on rolled-over balances.</p>
+                </div>
+
+                <!-- Article 5 -->
+                <div class="article-box" style="border-left-color: #ef4444;">
+                    <h4 style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> ARTICLE 5. BREACH HANDLING (DUAL-LOCK)</h4>
+                    <p>In cases of default, MoMo applies financial penalties and limit reductions. FruitCare AI reserves the operational right to freeze Web Dashboards and AI modules until obligations are settled.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Tables / Data Section -->
+    <section class="section bg-light" id="plans">
+        <div class="container text-center">
+            <h2 class="section-title" data-aos="fade-up">Installment & Late Payment Structure</h2>
+            <p class="section-desc" data-aos="fade-up" data-aos-delay="100">Conversion eligibility requires a minimum 100,000 VND transaction and no overdue invoices.</p>
+            
+            <div class="grid-3" style="gap: 2rem; margin-top: 3rem;">
+                <!-- Installment Fees Table -->
+                <div class="modern-table-wrapper" style="grid-column: span 1;" data-aos="fade-up" data-aos-delay="150">
+                    <h3 style="padding: 1.5rem; background: var(--bg-white); border-bottom: 1px solid var(--glass-border); margin: 0; font-size: 1.1rem; color: var(--primary-dark);"><i class="fa-regular fa-calendar-days"></i> Installment Tenure</h3>
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Fee Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>3 months</td><td>Specified (%)</td></tr>
+                            <tr><td>6 months</td><td>Specified (%)</td></tr>
+                            <tr><td>9 months</td><td>Specified (%)</td></tr>
+                            <tr><td>12 months</td><td>Specified (%)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Late Payments Table -->
+                <div class="modern-table-wrapper" style="grid-column: span 2;" data-aos="fade-up" data-aos-delay="250">
+                    <h3 style="padding: 1.5rem; background: var(--bg-white); border-bottom: 1px solid var(--glass-border); margin: 0; font-size: 1.1rem; color: #ef4444;"><i class="fa-solid fa-clock"></i> Late Payment Penalty Schedule</h3>
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Days Past Due</th>
+                                <th>Postpaid Balance Formula</th>
+                                <th>Installment Balance Formula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 – 4 days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
+                            <tr><td>5 – 9 days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
+                            <tr><td>10 – 14 days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
+                            <tr><td>15+ days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div data-aos="zoom-in" data-aos-delay="400" style="margin-top: 4rem;">
+                <h3 style="margin-bottom: 1rem;">Ready to upgrade your packing line?</h3>
+                <a href="https://www.momo.vn/vi-tra-sau" target="_blank" class="btn btn-primary momo-gradient-bg momo-shadow btn-lg"><i class="fa-solid fa-mobile-screen"></i> Register on MoMo App</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding-top: 0; background: var(--bg-white); border-top: 1px solid #E2E8F0;">
+        <div class="footer-bottom">
+            <p>&copy; 2026 FruitCare AI Financial Services. All terms apply.</p>
+        </div>
+    </footer>
+
+    <!-- AOS Animation script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Global Script (Animations & Page Transitions) -->
+    <script src="script.js"></script>
+</body>
+</html>
