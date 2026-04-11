@@ -260,15 +260,16 @@
                     <table class="modern-table">
                         <thead>
                             <tr>
-                                <th>Option</th>
-                                <th>Fee Rate</th>
+                                <th>Installment Tenure</th>
+                                <th>Applicable Fee Rate</th>
+                                <th>Effective Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>3 months</td><td>Specified (%)</td></tr>
-                            <tr><td>6 months</td><td>Specified (%)</td></tr>
-                            <tr><td>9 months</td><td>Specified (%)</td></tr>
-                            <tr><td>12 months</td><td>Specified (%)</td></tr>
+                            <tr><td>3 months</td><td>To be specified (7.5%)</td><td>01/03/2026</td></tr>
+                            <tr><td>6 months</td><td>To be specified (15%)</td><td>01/03/2026</td></tr>
+                            <tr><td>9 months</td><td>To be specified (22.5%)</td><td>01/03/2026</td></tr>
+                            <tr><td>12 months</td><td>To be specified (30%)</td><td>01/03/2026</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -280,15 +281,31 @@
                         <thead>
                             <tr>
                                 <th>Days Past Due</th>
-                                <th>Postpaid Balance Formula</th>
-                                <th>Installment Balance Formula</th>
+                                <th>Postpaid Balance</th>
+                                <th>Installment Balance</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1 – 4 days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
-                            <tr><td>5 – 9 days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
-                            <tr><td>10 – 14 days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
-                            <tr><td>15+ days</td><td>% of total overdue postpaid</td><td>% of total overdue installment</td></tr>
+                            <tr>
+                                <td>1 – 4 days</td>
+                                <td>5.25% of total overdue postpaid balance</td>
+                                <td>5.25% of total overdue installment balance</td>
+                            </tr>
+                            <tr>
+                                <td>5 – 9 days</td>
+                                <td>10.5% of total overdue postpaid balance</td>
+                                <td>10.5% of total overdue installment balance</td>
+                            </tr>
+                            <tr>
+                                <td>10 – 14 days</td>
+                                <td>15.75% of total overdue postpaid balance</td>
+                                <td>15.75% of total overdue installment balance</td>
+                            </tr>
+                            <tr>
+                                <td>15 days or more</td>
+                                <td>21% of total overdue postpaid balance</td>
+                                <td>21% of total overdue installment balance</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
